@@ -2,11 +2,12 @@
 
 import 'package:flutter/material.dart';
 
+import './questions.dart';
+import './answers.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
-
   @override
   State<StatefulWidget> createState() {
     return _MyAppState();
@@ -16,20 +17,27 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   var _quesIndex = 0;
 
-  void _func() {
+  void _ansQfinal() {
     setState(() {
       _quesIndex = _quesIndex + 1;
     });
+    print(_quesIndex);
   }
 
   @override
   Widget build(BuildContext context) {
-    var ques = [
-      "What is your favorite color?",
-      "What is your favorite animal?"
+    const data = [
+      {
+        "Q": "What is your favorite color?",
+        "A": ['Blue', 'Red', 'Black', 'Yellow']
+      },
+      {
+        "Q": "What is your favorite animal?",
+        "A": ['Dogs', 'Sharks', 'Lion', 'Horse']
+      },
     ];
 
-    if (ques.length == _quesIndex) {
+    if (data.length == _quesIndex) {
       _quesIndex = 0;
     }
 
@@ -40,20 +48,12 @@ class _MyAppState extends State<MyApp> {
         ),
         body: Column(
           children: [
-            Text(ques[_quesIndex]),
-            ElevatedButton(
-              child: const Text("Red"),
-              onPressed: () {
-                print("invoked red");
-              },
+            Questions(
+              data[_quesIndex]['Q'] as String,
             ),
-            ElevatedButton(
-                child: const Text("Black"),
-                onPressed: () => print("invoked black")),
-            ElevatedButton(
-              child: const Text("Next Question"),
-              onPressed: _func,
-            ),
+            ...(data[_quesIndex]['A'] as List<String>).map((ans) {
+              return Answers(_ansQfinal, ans);
+            }).toList()
           ],
         ),
       ),
